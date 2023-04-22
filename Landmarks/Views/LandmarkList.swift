@@ -14,14 +14,19 @@ struct LandmarkList: View {
     @State private var stateSelected = "";
     
     var filteredLandmarks: [Landmark]{
+        if(filterByState && showFavoritesOnly){
+            return modelData.landmarks.filter{landmark in
+                (landmark.isFavorite && stateSelected == landmark.state)
+            }
+        }
         if(filterByState){
             return modelData.landmarks.filter{landmark in
-                (!showFavoritesOnly || landmark.isFavorite)
+                (stateSelected == landmark.state)
             }
         }
         if(showFavoritesOnly){
            return modelData.landmarks.filter{landmark in
-                (!showFavoritesOnly || landmark.isFavorite)
+                (landmark.isFavorite)
             }
         }
         return modelData.landmarks
