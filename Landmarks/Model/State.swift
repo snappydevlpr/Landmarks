@@ -7,7 +7,7 @@
 
 import Foundation
 
-var states = ["Alabama",
+var stateNames = ["Alabama",
         "Alaska",
         "Arizona",
         "Arkansas",

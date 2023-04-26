@@ -12,6 +12,7 @@ struct LandmarkList: View {
     @State private var filterByState = false;
     @State private var showFavoritesOnly=false;
     @State private var stateSelected = "";
+    @State private var darkModeEnabled = false;
     
     var filteredLandmarks: [Landmark]{
         if(filterByState && showFavoritesOnly){
@@ -33,31 +34,56 @@ struct LandmarkList: View {
     }
     
     var body: some View {
-        NavigationView{
-            List {
-                HStack {
-                    NavigationLink{
-                        ListFilters(showFavoritesOnly: $showFavoritesOnly, filterByState: $filterByState, stateSelected: $stateSelected)
-                    }label: {
-                        HStack {
-                            Spacer()
-                            Text("Filters")
-                        }
-                    }
-                }
-                
-                ForEach(filteredLandmarks){ landmark in
-                    NavigationLink{
-                        LandmarkDetail(landmark: landmark)
-                    } label: {
-                        LandMarkRow(landmark: landmark)
-                    }
+           
+            NavigationView{
+                ZStack{
+                    Color(darkModeEnabled ? "darkMode" : "lightMode")
+                        .ignoresSafeArea(.all)
                     
+                    VStack{
+                        HStack {
+                            Text("Landmarks")
+                                .font(.title)
+                                .foregroundColor(darkModeEnabled ? .white : .black)
+                            Spacer()
+                            NavigationLink{
+                                ListFilters(showFavoritesOnly: $showFavoritesOnly, filterByState: $filterByState, stateSelected: $stateSelected, darkMode: $darkModeEnabled)
+                            }label: {
+                                Image(systemName: "line.3.horizontal.decrease.circle")
+                                    .resizable()
+                                    .frame(width: 20,height: 20)
+                            }
+                        }
+                        .padding()
+                        
+                        List {
+                            ForEach(filteredLandmarks){ landmark in
+                                NavigationLink{
+                                    LandmarkDetail(darkModeEnabled: $darkModeEnabled,landmark: landmark)
+                                } label: {
+                                    LandMarkRow(landmark: landmark, darkModeEnabled: $darkModeEnabled)
+                                }
+                                .listRowBackground(darkModeEnabled ? Color(.black) : Color("lightMode"))
+
+                            }
+
+                        }
+                        .background(darkModeEnabled ? Color(.black) : Color("lightMode"))
+
+                        .scrollContentBackground(.hidden)
+
+                        Button("Add a New Landmark") {
+                            /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Action@*/ /*@END_MENU_TOKEN@*/
+                        }
+                        .padding()
+                        .foregroundColor(.white)
+                        .background(.blue)
+                        .cornerRadius(10)
+                        
+                        
+                    }
                 }
             }
-            .navigationTitle("Landmarks")
-        }
-     
     }
 }
 

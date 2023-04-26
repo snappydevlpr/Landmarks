@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LandmarkDetail: View {
     @EnvironmentObject var modelData:ModelData
-    
+    @Binding var darkModeEnabled: Bool;
     var landmark :Landmark
     
     var landmarkIndex: Int{
@@ -28,34 +28,51 @@ struct LandmarkDetail: View {
                 HStack {
                     Text(landmark.name)
                         .font(.title)
+                        .foregroundColor(darkModeEnabled ? Color(.white) : Color(.black))
+
                     FavoriteButton(isSet: $modelData.landmarks[landmarkIndex].isFavorite)
                 }
                 HStack {
                     Text(landmark.park)
                         .font(.subheadline)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(darkModeEnabled ? Color(.white) : Color(.black))
+
                     Spacer()
                     Text(landmark.state)
                         .font(.subheadline)
-                    
+                        .foregroundColor(darkModeEnabled ? Color(.white) : Color(.black))
+
                 }
                 Divider()
                 Text("About \(landmark.name)")
                     .font(.title2)
+                    .foregroundColor(darkModeEnabled ? Color(.white) : Color(.black))
+
                 Text(landmark.description)
+                    .foregroundColor(darkModeEnabled ? Color(.white) : Color(.black))
+
             }
             .padding()
             Spacer()
         }
         .navigationTitle(landmark.name)
         .navigationBarTitleDisplayMode(.inline)
+        .background(darkModeEnabled ? Color("darkMode") : Color("lightMode"))
+
     }
+    
 }
 
 struct LandmarkDetail_Previews: PreviewProvider {
     static let modelData = ModelData()
+    
     static var previews: some View {
-        LandmarkDetail(landmark: ModelData().landmarks[0])
+        let darkModeEnabled = Binding<Bool>(
+            get: {return true},
+            set: { _ in }
+        )
+        
+        LandmarkDetail(darkModeEnabled: darkModeEnabled, landmark: ModelData().landmarks[0])
             .environmentObject(modelData)
     }
 }

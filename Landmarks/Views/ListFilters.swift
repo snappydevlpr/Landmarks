@@ -11,6 +11,7 @@ struct ListFilters: View {
     @Binding var showFavoritesOnly:Bool;
     @Binding var filterByState:Bool;
     @Binding var stateSelected:String;
+    @Binding var darkMode:Bool;
     
     var body: some View {
         VStack{
@@ -18,7 +19,6 @@ struct ListFilters: View {
                 Text("Visited Only: ")
             }
             .padding()
-            Divider()
             VStack{
                 Toggle(isOn: $filterByState){
                     Text("Filter By State: ")
@@ -28,11 +28,19 @@ struct ListFilters: View {
                         .foregroundColor(filterByState ? .black: .gray)
                     Spacer()
                     Picker("State", selection: $stateSelected) {
-                        ForEach(states,id: \.self){ state in
+                        ForEach(stateNames,id: \.self){ state in
                             Text(state)
                         }
                     }
                     .disabled(!filterByState)
+                }
+            }
+            .padding()
+            Divider()
+            Toggle(isOn: $darkMode){
+                HStack{
+                    Image(systemName: "moon")
+                    Text("Dark Mode")
                 }
             }
             .padding()
@@ -59,7 +67,10 @@ struct ListFilters_Previews: PreviewProvider {
             get: {return ""},
             set: { _ in }
         )
-        
-        ListFilters(showFavoritesOnly: showFavoritesOnly, filterByState: filterByState, stateSelected: stateSelected)
+        let darkMode = Binding<Bool>(
+            get: {return true},
+            set: { _ in }
+        )
+            ListFilters(showFavoritesOnly: showFavoritesOnly, filterByState: filterByState, stateSelected: stateSelected, darkMode: darkMode)
     }
 }
