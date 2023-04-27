@@ -12,20 +12,27 @@ struct ListFilters: View {
     @Binding var filterByState:Bool;
     @Binding var stateSelected:String;
     @Binding var darkMode:Bool;
-    
+    @Binding var ViewOption:Int;
     var body: some View {
         VStack{
-            Toggle(isOn: $showFavoritesOnly){
-                Text("Visited Only: ")
+            Picker("View Options", selection: $ViewOption ) {
+                Text("List").tag(0)
+                Text("Grid").tag(1)
             }
-            .padding()
+            .pickerStyle(.segmented)
             VStack{
+                Toggle(isOn: $showFavoritesOnly){
+                    Text("Visited Only: ")
+                        .foregroundColor(darkMode ? .white : .black)
+                }
                 Toggle(isOn: $filterByState){
                     Text("Filter By State: ")
+                        .foregroundColor(darkMode ? .white : .black)
+
                 }
                 HStack{
                     Text("By State: ")
-                        .foregroundColor(filterByState ? .black: .gray)
+                        .foregroundColor(filterByState ? darkMode ? .white : .gray : .gray)
                     Spacer()
                     Picker("State", selection: $stateSelected) {
                         ForEach(stateNames,id: \.self){ state in
@@ -37,16 +44,21 @@ struct ListFilters: View {
             }
             .padding()
             Divider()
+                .background(.black)
             Toggle(isOn: $darkMode){
                 HStack{
                     Image(systemName: "moon")
+                        .foregroundColor(darkMode ? .white : .black)
                     Text("Dark Mode")
+                        .foregroundColor(darkMode ? .white : .black)
+
                 }
             }
             .padding()
             Spacer()
         }
         .padding()
+        .background(darkMode ? Color("darkMode") : Color("lightMode"))
     }
 }
 
@@ -71,6 +83,12 @@ struct ListFilters_Previews: PreviewProvider {
             get: {return true},
             set: { _ in }
         )
-            ListFilters(showFavoritesOnly: showFavoritesOnly, filterByState: filterByState, stateSelected: stateSelected, darkMode: darkMode)
+        
+        let ViewOption = Binding<Int>(
+            get: {return 0},
+            set: { _ in }
+        )
+        
+        ListFilters(showFavoritesOnly: showFavoritesOnly, filterByState: filterByState, stateSelected: stateSelected, darkMode: darkMode, ViewOption: ViewOption)
     }
 }

@@ -13,7 +13,8 @@ struct LandmarkList: View {
     @State private var showFavoritesOnly=false;
     @State private var stateSelected = "";
     @State private var darkModeEnabled = false;
-    
+    @State private var viewOption = 0;
+
     var filteredLandmarks: [Landmark]{
         if(filterByState && showFavoritesOnly){
             return modelData.landmarks.filter{landmark in
@@ -47,7 +48,7 @@ struct LandmarkList: View {
                                 .foregroundColor(darkModeEnabled ? .white : .black)
                             Spacer()
                             NavigationLink{
-                                ListFilters(showFavoritesOnly: $showFavoritesOnly, filterByState: $filterByState, stateSelected: $stateSelected, darkMode: $darkModeEnabled)
+                                ListFilters(showFavoritesOnly: $showFavoritesOnly, filterByState: $filterByState, stateSelected: $stateSelected, darkMode: $darkModeEnabled, ViewOption: $viewOption)
                             }label: {
                                 Image(systemName: "line.3.horizontal.decrease.circle")
                                     .resizable()
@@ -56,6 +57,8 @@ struct LandmarkList: View {
                         }
                         .padding()
                         
+                        
+                        
                         List {
                             ForEach(filteredLandmarks){ landmark in
                                 NavigationLink{
@@ -63,13 +66,11 @@ struct LandmarkList: View {
                                 } label: {
                                     LandMarkRow(landmark: landmark, darkModeEnabled: $darkModeEnabled)
                                 }
-                                .listRowBackground(darkModeEnabled ? Color(.black) : Color("lightMode"))
-
+                                .listRowBackground(darkModeEnabled ? Color("darkMode") : Color("lightMode"))
                             }
 
                         }
                         .background(darkModeEnabled ? Color(.black) : Color("lightMode"))
-
                         .scrollContentBackground(.hidden)
 
                         Button("Add a New Landmark") {

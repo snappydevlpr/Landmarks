@@ -55,7 +55,7 @@ struct LandmarkDetail: View {
             .padding()
             Spacer()
         }
-        .navigationTitle(landmark.name)
+        
         .navigationBarTitleDisplayMode(.inline)
         .background(darkModeEnabled ? Color("darkMode") : Color("lightMode"))
 
