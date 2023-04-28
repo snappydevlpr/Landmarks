@@ -42,11 +42,14 @@ struct LandmarkList: View {
                         .ignoresSafeArea(.all)
                     
                     VStack{
+                        // MARK: - Page title
                         HStack {
                             Text("Landmarks")
                                 .font(.title)
                                 .foregroundColor(darkModeEnabled ? .white : .black)
                             Spacer()
+                            
+                            //MARK: - Filter Button
                             NavigationLink{
                                 ListFilters(showFavoritesOnly: $showFavoritesOnly, filterByState: $filterByState, stateSelected: $stateSelected, darkMode: $darkModeEnabled, ViewOption: $viewOption)
                             }label: {
@@ -58,7 +61,7 @@ struct LandmarkList: View {
                         .padding()
                         
                         
-                        
+                        // MARK: - Landmark List
                         List {
                             ForEach(filteredLandmarks){ landmark in
                                 NavigationLink{
